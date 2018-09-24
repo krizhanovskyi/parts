@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="parts">
+    <div>
+        <form method="get" action="/search">
+            <input type="text" id="searchString" name="searchString" placeholder="Поиск по наименованию"/>
+            <input type="submit" value="Найти"/>
+        </form>
+        <div>
+            <label>Фильтр: </label>
+        <a th:href="@{'/filter/{filterMethod}' (filterMethod = 'ALL')}">Все</a>
+        <a th:href="@{'/filter/{filterMethod}' (filterMethod = 'NECESSARY')}">Необходимые</a>
+        <a th:href="@{'/filter/{filterMethod}' (filterMethod = 'OPTIONAL')}">Опциональные</a>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover horizontal-align">
+        <thead>
+        <tr>
+            <th style="width: 60%">Наименование</th>
+            <th style="width: 20%">Необходимость</th>
+            <th style="width: 5%">Количество</th>
+            <th style="width: 5%">Редактировать</th>
+            <th style="width: 5%">Удалить</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="part : ${parts.content}">
+
+            <td th:text="${part.name}">Наименование</td>
+            <td style="text-align: center">
+                <i th:if="${part.necessary} == true">Да</i>
+                <i th:if="${part.necessary} == false">Нет</i>
+            </td>
+            <td th:text="${part.quantity}">Количество</td>
+
+            <td style="text-align: center"><a th:href="@{'/edit/{id}'(id=${part.id})}"><i class="fa fa-edit" style="font-size:20px"></i></a></td>
+            <td style="text-align: center"><a th:href="@{'/delete/{id}'(id=${part.id})}"><i class="fa fa-trash" style="font-size:20px"></i></a></td>
+        </tr>
+        </tbody>
+    </table>
+    <!--Pagination block-->
+    <nav aria-label="...">
+        <ul class="pagination">
+            <li class="page-item">
+    <span aria-hidden="true" th:if="${parts.hasPrevious()}">
+        <a th:href="@{/(page=${parts.number-1},size=${parts.size})}">&laquo;</a>
+    </span>
+            </li>
+        <th:block th:each="i: ${#numbers.sequence(0, parts.totalPages - 1)}">
+
+            <li class="page-item active">
+            <span th:if="${parts.number == i}" th:text="${i+1}" class="selected"></span>
+        </li>
+            <li class="page-item">
+            <span th:unless="${parts.number == i}">
+             <a class="page-link" th:href="@{/(page=${i},size=${parts.size})}" th:text="${i+1}"></a>
+        </span>
+            </li>
+        </th:block>
+            <li class="page-item">
+        <span aria-hidden="true" th:if="${parts.hasNext()}">
+        <a class="page-link" th:href="@{/(page=${parts.number+1},size=${parts.size})}">&raquo;</a>
+    </span>
+            </li>
+            </ul>
+    </nav>
+<!-- Can collect block-->
+    <table class="table table-bordered table-hover horizontal-align">
+        <tbody>
+        <tr>
+            <td style="width: 55%">Можно собрать</td>
+            <td style="text-align:center" th:text="${collect}"></td>
+            <td style="width: 26%">компьютеров</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>
