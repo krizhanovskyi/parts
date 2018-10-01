@@ -4,8 +4,10 @@ import com.parts.model.Part;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface PartService {
-    Part getPartById(Integer id);
+    Optional<Part> getPartById(Integer id);
     void savePart(Part part);
     void updatePart(Integer id, String name, int quantity, boolean necessary);
     void deletePart(Integer id);

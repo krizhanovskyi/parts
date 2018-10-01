@@ -11,6 +11,12 @@
                     <li><a href="#" th:href="@{/new}">Добавить</a></li>
                 </ul>
             </div>
+            <div class="navbar-right">
+                <label th:for="log">Пользователь: [[${#httpServletRequest.remoteUser}]]</label>
+                <form th:action="@{/logout}" method="post" th:id="log">
+                    <input type="submit" value="Выйти"/>
+                    </form>
+            </div>
         </div>
     </nav>
 </div>

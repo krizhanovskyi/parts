@@ -23,6 +23,11 @@ public class PartController {
     }
 
     @GetMapping("/")
+    public String greeting(){
+        return "redirect:/list";
+    }
+
+    @GetMapping("/list")
     public String list(@PageableDefault(size = 10) Pageable pageable, Model model) {
         Page<Part> parts;
         if(searchString.isEmpty()){
@@ -42,19 +47,19 @@ public class PartController {
     public String Search(@RequestParam(value = "searchString", required = false, defaultValue = "") String searchString) {
         if(searchString.isEmpty())filterMethod = "ALL";
         this.searchString = searchString;
-        return "redirect:/";
+        return "redirect:/list";
     }
 
     @GetMapping("/filter/{filterM}")
     public String sortChoose(@PathVariable String filterM) {
         filterMethod = filterM;
         searchString = "";
-        return "redirect:/";
+        return "redirect:/list";
     }
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
-        Part part = service.getPartById(id);
+        Part part = service.getPartById(id).get();
         model.addAttribute("part", part);
         return "operations/edit";
     }
@@ -63,7 +68,7 @@ public class PartController {
     public String savePart(@RequestParam Integer id, @RequestParam String name, @RequestParam int quantity,
                            @RequestParam(defaultValue = "false") boolean necessary) {
         service.updatePart(id, name, quantity, necessary);
-        return "redirect:/";
+        return "redirect:/list";
     }
 
     @GetMapping("/new")
@@ -74,13 +79,13 @@ public class PartController {
     @PostMapping("/save")
     public String updatePart(@RequestParam String name, @RequestParam int quantity, @RequestParam(defaultValue = "false") boolean necessary) {
         service.savePart(new Part(name, quantity, necessary));
-        return "redirect:/";
+        return "redirect:/list";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) {
         service.deletePart(id);
-        return "redirect:/";
+        return "redirect:/list";
     }
 
     private Page<Part> filterAndSort(Pageable pageable) {

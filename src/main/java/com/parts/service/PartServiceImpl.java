@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.parts.model.Part;
 import com.parts.repository.PartRepository;
 
+import java.util.Optional;
+
 @Service
 public class PartServiceImpl implements PartService {
 
@@ -18,8 +20,8 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
-    public Part getPartById(Integer id) {
-        return repository.findOne(id);
+    public Optional<Part> getPartById(Integer id) {
+        return repository.findById(id);
     }
 
     @Override
@@ -29,16 +31,19 @@ public class PartServiceImpl implements PartService {
 
     @Override
     public void updatePart(Integer id, String name, int quantity, boolean necessary) {
-        Part updated = repository.findOne(id);
-        updated.setName(name);
-        updated.setNecessary(necessary);
-        updated.setQuantity(quantity);
-        repository.save(updated);
+        Optional<Part> updated = repository.findById(id);
+        if(updated.isPresent()){
+            Part getUpdated = updated.get();
+            getUpdated.setName(name);
+            getUpdated.setNecessary(necessary);
+            getUpdated.setQuantity(quantity);
+            repository.save(getUpdated);
+        }
     }
 
     @Override
     public void deletePart(Integer id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override

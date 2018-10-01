@@ -5,8 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.parts.model.Part;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 
-public interface PartRepository extends JpaRepository<Part, Integer> {
+public interface PartRepository extends CrudRepository<Part, Integer> {
 
     Page<Part> findAllByOrderByNameAsc(Pageable pageable);
 

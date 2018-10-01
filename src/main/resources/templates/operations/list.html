@@ -46,7 +46,7 @@
         <ul class="pagination">
             <li class="page-item">
     <span aria-hidden="true" th:if="${parts.hasPrevious()}">
-        <a th:href="@{/(page=${parts.number-1},size=${parts.size})}">&laquo;</a>
+        <a th:href="@{/list/(page=${parts.number-1},size=${parts.size})}">&laquo;</a>
     </span>
             </li>
         <th:block th:each="i: ${#numbers.sequence(0, parts.totalPages - 1)}">
@@ -56,13 +56,13 @@
         </li>
             <li class="page-item">
             <span th:unless="${parts.number == i}">
-             <a class="page-link" th:href="@{/(page=${i},size=${parts.size})}" th:text="${i+1}"></a>
+             <a class="page-link" th:href="@{/list/(page=${i},size=${parts.size})}" th:text="${i+1}"></a>
         </span>
             </li>
         </th:block>
             <li class="page-item">
         <span aria-hidden="true" th:if="${parts.hasNext()}">
-        <a class="page-link" th:href="@{/(page=${parts.number+1},size=${parts.size})}">&raquo;</a>
+        <a class="page-link" th:href="@{/list/(page=${parts.number+1},size=${parts.size})}">&raquo;</a>
     </span>
             </li>
             </ul>
